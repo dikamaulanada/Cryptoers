@@ -6,21 +6,21 @@
 }
 
 :root {
-    /* Colors */
-    --primary-blue: #00d4ff;
-    --primary-purple: #7c3aed;
-    --dark-blue: #0a0e27;
-    --darker-blue: #070b1f;
-    --accent-blue: #1a1b3a;
-    --text-white: #ffffff;
-    --text-gray: #a3a3a3;
-    --text-light: #e5e7eb;
-    
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-    --gradient-background: linear-gradient(135deg, var(--dark-blue), var(--accent-blue));
-    --gradient-card: linear-gradient(145deg, rgba(26, 27, 58, 0.8), rgba(10, 14, 39, 0.9));
-    
+  /* Colors */
+  --primary-pink: #ff00c1;
+  --primary-cyan: #00f2ff;
+  --dark-blue: #0f0524;
+  --darker-blue: #080214;
+  --accent-blue: #21134a;
+  --text-white: #ffffff;
+  --text-gray: #b0a5d1;
+  --text-light: #e0d8ff;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
+  --gradient-background: linear-gradient(135deg, var(--dark-blue), var(--darker-blue));
+  --gradient-card: linear-gradient(145deg, rgba(33, 19, 74, 0.8), rgba(8, 2, 20, 0.9));
+
     /* Spacing */
     --space-xs: 0.5rem;
     --space-sm: 1rem;
@@ -596,42 +596,68 @@ body {
     body {
         padding-top: 40px; /* Atur 70px sesuai tinggi navbar Anda */
     }
-    
+
     .nav-links,
     .nav-social {
         display: none;
     }
-    
+
     .hamburger {
         display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 1001;
+        margin-left: 0; /* Hapus margin kiri yang lama */
+        margin-right: 1rem; /* Tambahkan margin kanan untuk jarak */
     }
-    
+    .hamburger span {
+        height: 3px;
+        width: 25px;
+        background: white;
+        display: block;
+        border-radius: 2px;
+        transition: all 0.3s ease-in-out; /* Animasi lebih halus */
+    }
+
+    /* --- BLOK PERBAIKAN --- */
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+    /* --- AKHIR BLOK PERBAIKAN --- */
+
     .hero-title {
         font-size: var(--font-size-3xl);
     }
-    
+
     .section-title {
         font-size: var(--font-size-2xl);
     }
-    
+
     .features-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .services-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .hero-buttons {
         flex-direction: column;
         align-items: center;
         gap: var(--space-md);
     }
-    
+
     .hero-container {
         padding-top: 70px;
     }
-    
+
     .nav-menu {
         display: none;
         flex-direction: column;
@@ -662,54 +688,29 @@ body {
         width: 100%;
         margin-top: 0.5rem;
     }
-    .hamburger {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
-        z-index: 1001;
-        margin-left: 1rem;
-    }
-    .hamburger span {
-        height: 3px;
-        width: 25px;
-        background: white;
-        display: block;
-        border-radius: 2px;
-        transition: all 0.3s ease;
-    }
-    .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -5px);
-    }
 }
 
 @media (max-width: 480px) {
     .container {
         padding: 0 var(--space-sm);
     }
-    
+
     .nav-container {
         padding: 0 var(--space-sm);
     }
-    
+
     .hero-title {
         font-size: var(--font-size-2xl);
     }
-    
+
     .service-card {
         padding: var(--space-lg);
     }
-    
+
     .hero-buttons {
         width: 100%;
     }
-    
+
     .btn {
         width: 100%;
         justify-content: center;
@@ -740,4 +741,34 @@ body {
     .hamburger {
         display: none !important;
     }
+}
+
+/* Night Mode */
+body.night-mode {
+    --primary-pink: #ff3cac;
+    --primary-cyan: #ff8c42;
+    --dark-blue: #2c2541;
+    --darker-blue: #1e1a2e;
+    --accent-blue: #4a4063;
+    --primary-blue: #ff3cac;
+    --text-white: #fafafa;
+    --text-gray: #c7c1d3;
+    --text-light: #f3f1f7;
+    --gradient-primary: linear-gradient(135deg, var(--primary-cyan), var(--primary-pink));
+    --gradient-background: linear-gradient(135deg, var(--dark-blue), var(--darker-blue));
+    --gradient-card: linear-gradient(145deg, rgba(74, 64, 99, 0.8), rgba(30, 26, 46, 0.9));
+}
+
+/* Tombol toggle */
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-size: 1.3rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.theme-toggle:hover {
+    color: var(--primary-blue);
 }

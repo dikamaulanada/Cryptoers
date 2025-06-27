@@ -1,271 +1,23 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
+/**
+ * @file script.js
+ * @description Skrip utama untuk fungsionalitas interaktif, animasi, dan optimasi performa.
+ * @version 1.1.0
+ * @date 27 Juni 2025
+ */
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(10, 14, 39, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
-    } else {
-        navbar.style.background = 'rgba(10, 14, 39, 0.95)';
-        navbar.style.boxShadow = 'none';
-    }
-});
+// =================================================================================
+// FUNGSI BANTU (HELPER FUNCTIONS)
+// Definisi fungsi-fungsi ini bisa berada di luar karena tidak berinteraksi
+// langsung dengan DOM saat didefinisikan.
+// =================================================================================
 
-// Active navigation link highlighting
-window.addEventListener('scroll', function() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (window.scrollY >= (sectionTop - 200)) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// Mobile menu toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
-
-hamburger.addEventListener('click', function(e) {
-    e.stopPropagation();
-    navMenu.classList.toggle('active');
-    hamburger.classList.toggle('active');
-});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', function(e) {
-    if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-        navMenu.classList.remove('active');
-        hamburger.classList.remove('active');
-    }
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-        }
-    });
-}, observerOptions);
-
-// Observe all service cards and feature boxes
-document.querySelectorAll('.service-card, .feature-box').forEach(el => {
-    observer.observe(el);
-});
-
-// Parallax effect for floating elements
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const rate = scrolled * -0.5;
-    
-    document.querySelectorAll('.floating-element').forEach((element, index) => {
-        const speed = (index + 1) * 0.2;
-        element.style.transform = `translateY(${rate * speed}px) rotate(${scrolled * 0.1}deg)`;
-    });
-});
-
-// Add loading animation
-window.addEventListener('load', function() {
-    document.body.classList.add('loaded');
-});
-
-// Service card hover effects
-document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-8px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// Button click animations
-document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-        let ripple = document.createElement('span');
-        ripple.classList.add('ripple');
-        this.appendChild(ripple);
-        
-        let x = e.clientX - e.target.offsetLeft;
-        let y = e.clientY - e.target.offsetTop;
-        
-        ripple.style.left = `${x}px`;
-        ripple.style.top = `${y}px`;
-        
-        setTimeout(() => {
-            ripple.remove();
-        }, 300);
-    });
-});
-
-// Form validation (if contact form is added later)
-function validateForm(form) {
-    const inputs = form.querySelectorAll('input[required], textarea[required]');
-    let isValid = true;
-    
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            input.classList.add('error');
-            isValid = false;
-        } else {
-            input.classList.remove('error');
-        }
-    });
-    
-    return isValid;
-}
-
-// Lazy loading for images
-const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            img.classList.remove('lazy');
-            observer.unobserve(img);
-        }
-    });
-});
-
-document.querySelectorAll('img[data-src]').forEach(img => {
-    imageObserver.observe(img);
-});
-
-// Typing animation for hero title (optional enhancement)
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// Counter animation for statistics (if added later)
-function animateCounter(element, start, end, duration = 2000) {
-    let startTime = null;
-    
-    function animate(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
-        
-        const value = Math.floor(progress * (end - start) + start);
-        element.textContent = value;
-        
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        }
-    }
-    
-    requestAnimationFrame(animate);
-}
-
-// Initialize tooltips (if using tooltips)
-function initializeTooltips() {
-    const tooltips = document.querySelectorAll('[data-tooltip]');
-    
-    tooltips.forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'tooltip';
-            tooltip.textContent = this.dataset.tooltip;
-            document.body.appendChild(tooltip);
-            
-            const rect = this.getBoundingClientRect();
-            tooltip.style.left = `${rect.left + rect.width / 2}px`;
-            tooltip.style.top = `${rect.top - 40}px`;
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            const tooltip = document.querySelector('.tooltip');
-            if (tooltip) {
-                tooltip.remove();
-            }
-        });
-    });
-}
-
-// Initialize all interactions when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeTooltips();
-    
-    // Add entrance animations
-    setTimeout(() => {
-        document.querySelector('.hero-text').classList.add('animate-in');
-        document.querySelector('.hero-illustration').classList.add('animate-in');
-    }, 500);
-
-    // Hamburger menu toggle
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('navMenu');
-
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', function(e) {
-            e.stopPropagation();
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        // Tutup menu saat link diklik (mobile UX)
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if(window.innerWidth <= 768){
-                    hamburger.classList.remove('active');
-                    navMenu.classList.remove('active');
-                }
-            });
-        });
-
-        // Tutup menu saat klik di luar menu
-        document.addEventListener('click', function(e) {
-            if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            }
-        });
-    }
-});
-
-// Performance optimization - debounce scroll events
+/**
+ * Mencegah fungsi dijalankan berulang kali dalam waktu singkat.
+ * Sangat berguna untuk event seperti 'scroll' atau 'resize' untuk meningkatkan performa.
+ * @param {Function} func Fungsi yang ingin dijalankan setelah waktu tunggu.
+ * @param {number} wait Waktu tunggu dalam milidetik (ms).
+ * @returns {Function} Fungsi baru yang sudah di-debounce.
+ */
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -278,7 +30,235 @@ function debounce(func, wait) {
     };
 }
 
-// Apply debounce to scroll events
-const debouncedScrollHandler = debounce(() => {
-    // Handle scroll events here
-}, 10);
+/**
+ * Fungsi untuk validasi form (Contoh).
+ * @param {HTMLFormElement} form Elemen form yang akan divalidasi.
+ * @returns {boolean} True jika valid, false jika tidak.
+ */
+function validateForm(form) {
+    const inputs = form.querySelectorAll('input[required], textarea[required]');
+    let isValid = true;
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            input.classList.add('error');
+            isValid = false;
+        } else {
+            input.classList.remove('error');
+        }
+    });
+    return isValid;
+}
+
+/**
+ * Fungsi untuk animasi mengetik (Contoh).
+ * @param {HTMLElement} element Elemen untuk menampilkan teks.
+ * @param {string} text Teks yang akan diketik.
+ * @param {number} speed Kecepatan mengetik dalam ms.
+ */
+function typeWriter(element, text, speed = 100) {
+    let i = 0;
+    element.innerHTML = '';
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+
+
+// =================================================================================
+// SKRIP UTAMA (MAIN SCRIPT)
+// Semua kode yang memanipulasi DOM dibungkus dalam 'DOMContentLoaded' untuk
+// memastikan semua elemen HTML sudah siap saat skrip dijalankan.
+// =================================================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // --- 1. SELEKSI ELEMEN PENTING ---
+    // Menyimpan elemen yang sering diakses ke dalam variabel untuk performa lebih baik.
+    const navbar = document.querySelector('.navbar');
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const allSections = document.querySelectorAll('section[id]');
+    const floatingElements = document.querySelectorAll('.floating-element');
+    const themeToggle = document.getElementById('themeToggle');
+    const serviceCards = document.querySelectorAll('.service-card');
+    const featureBoxes = document.querySelectorAll('.feature-box');
+    const buttons = document.querySelectorAll('.btn');
+    const lazyImages = document.querySelectorAll('img[data-src]');
+
+
+    // --- 2. LOGIKA HAMBURGER MENU (TERPUSAT DAN BERSIH) ---
+    if (hamburger && navMenu) {
+        // Buka/tutup menu saat ikon hamburger di-klik
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation(); // Mencegah event 'click' menyebar ke document
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Tutup menu saat link di dalam menu di-klik (penting untuk UX mobile)
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Tutup menu saat pengguna meng-klik di luar area menu
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+    }
+
+
+    // --- 3. FUNGSI UNTUK SEMUA EVENT SCROLL (TEROPTIMASI) ---
+    const handleScrollEvents = () => {
+        const scrollY = window.scrollY;
+
+        // a. Efek background pada navbar
+        if (navbar) {
+            if (scrollY > 50) {
+                navbar.style.background = 'rgba(10, 14, 39, 0.98)';
+                navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
+            } else {
+                navbar.style.background = 'rgba(10, 14, 39, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+        }
+
+        // b. Menandai link navigasi yang sedang aktif
+        let currentSectionId = '';
+        allSections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (scrollY >= (sectionTop - 200)) { // Offset 200px untuk akurasi
+                currentSectionId = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            // Gunakan `endsWith` untuk mencocokkan '#id' dengan lebih aman
+            if (link.href && link.href.endsWith('#' + currentSectionId)) {
+                link.classList.add('active');
+            }
+        });
+
+        // c. Efek Parallax pada elemen 'floating'
+        floatingElements.forEach((element, index) => {
+            const speed = (index + 1) * 0.08; // Kecepatan berbeda untuk setiap elemen
+            const movement = scrollY * -0.2 * speed;
+            element.style.transform = `translateY(${movement}px)`;
+        });
+    };
+
+    // Menerapkan fungsi scroll dengan debounce untuk mencegah pemanggilan berlebihan
+    window.addEventListener('scroll', debounce(handleScrollEvents, 10));
+
+
+    // --- 4. SMOOTH SCROLLING UNTUK JANGKAR (ANCHOR LINKS) ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+
+    // --- 5. INTERSECTION OBSERVER UNTUK ANIMASI DAN LAZY LOADING ---
+    // a. Observer untuk animasi elemen yang masuk ke viewport
+    const animateObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                observer.unobserve(entry.target); // Hentikan observasi setelah animasi berjalan
+            }
+        });
+    }, { threshold: 0.1 });
+
+    serviceCards.forEach(el => animateObserver.observe(el));
+    featureBoxes.forEach(el => animateObserver.observe(el));
+
+    // b. Observer untuk Lazy Loading gambar
+    const lazyLoadObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src; // Ganti src dengan data-src
+                img.removeAttribute('data-src');
+                img.classList.remove('lazy');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    lazyImages.forEach(img => lazyLoadObserver.observe(img));
+
+
+    // --- 6. EFEK INTERAKTIF LAINNYA ---
+    // a. Efek hover pada kartu layanan
+    serviceCards.forEach(card => {
+        card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-8px) scale(1.02)');
+        card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
+    });
+
+    // b. Efek riak (ripple) pada tombol
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            setTimeout(() => ripple.remove(), 500);
+        });
+    });
+
+    // c. Toggle tema (light/dark mode)
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('night-mode');
+            const icon = themeToggle.querySelector('i');
+            const isNightMode = document.body.classList.contains('night-mode');
+            // Ganti ikon berdasarkan tema
+            icon.classList.toggle('fa-sun', isNightMode);
+            icon.classList.toggle('fa-moon', !isNightMode);
+            // Simpan preferensi tema di localStorage (opsional)
+            // localStorage.setItem('theme', isNightMode ? 'night' : 'light');
+        });
+    }
+
+
+    // --- 7. LOADING SCREEN ---
+    // Menghilangkan layar loading setelah semua aset halaman dimuat
+    window.addEventListener('load', () => {
+        document.body.classList.add('loaded');
+        const preloader = document.getElementById('preloader');
+        if(preloader) {
+            setTimeout(() => preloader.style.display = 'none', 500);
+        }
+    });
+
+    // --- PANGGIL FUNGSI TAMBAHAN DI SINI JIKA DIPERLUKAN ---
+    // Contoh:
+    // const heroTitle = document.querySelector('.hero-title');
+    // if(heroTitle) {
+    //     typeWriter(heroTitle, "Selamat Datang di Website Kami", 120);
+    // }
+});
