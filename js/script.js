@@ -233,6 +233,36 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.hero-text').classList.add('animate-in');
         document.querySelector('.hero-illustration').classList.add('animate-in');
     }, 500);
+
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Tutup menu saat link diklik (mobile UX)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth <= 768){
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Tutup menu saat klik di luar menu
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+    }
 });
 
 // Performance optimization - debounce scroll events
