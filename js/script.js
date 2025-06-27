@@ -236,11 +236,11 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.toggle('night-mode');
             const icon = themeToggle.querySelector('i');
             const isNightMode = document.body.classList.contains('night-mode');
-            // Ganti ikon berdasarkan tema
-            icon.classList.toggle('fa-sun', isNightMode);
-            icon.classList.toggle('fa-moon', !isNightMode);
-            // Simpan preferensi tema di localStorage (opsional)
-            // localStorage.setItem('theme', isNightMode ? 'night' : 'light');
+
+            if (icon) {
+                icon.classList.toggle('fa-sun', isNightMode);
+                icon.classList.toggle('fa-moon', !isNightMode);
+            }
         });
     }
 
